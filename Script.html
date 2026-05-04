@@ -1,0 +1,297 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    loadDashboard();
+  });
+
+  function showPage(pageId, btn) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.add('hidden');
+    });
+
+    document.getElementById(pageId).classList.remove('hidden');
+
+    document.querySelectorAll('.nav').forEach(nav => {
+      nav.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+  }
+
+  function setMessage(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text || '';
+  }
+
+  function loadDashboard() {
+    google.script.run
+      .withSuccessHandler(function(data) {
+        document.getElementById('rawCount').textContent = data.rawCount;
+        document.getElementById('analysisCount').textContent = data.analysisCount;
+        document.getElementById('cardCount').textContent = data.cardCount;
+        document.getElementById('chatCount').textContent = data.chatCount;
+        document.getElementById('pendingCount').textContent = data.pendingCount;
+        document.getElementById('analyzedCount').textContent = data.analyzedCount;
+      })
+      .withFailureHandler(function(err) {
+        alert(err.message);
+      })
+      .getDashboardData();
+  }
+
+  function getFormData() {
+    return {
+      document_title: document.getElementById('document_title').value,
+      staff_name: document.getElementById('staff_name').value,
+      department: document.getElementById('department').value,
+      position: document.getElementById('position').value,
+      expertise_area: document.getElementById('expertise_area').value,
+      interview_question: document.getElementById('interview_question').value,
+      raw_answer: document.getElementById('raw_answer').value,
+      notes: document.getElementById('notes').value,
+      source_type: 'typed_document',
+      consent_status: 'consented'
+    };
+  }
+
+  function clearForm() {
+    [
+      'document_title',
+      'staff_name',
+      'department',
+      'position',
+      'expertise_area',
+      'interview_question',
+      'raw_answer',
+      'notes'
+    ].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }
+
+  function saveKnowledge() {
+    const formData = getFormData();
+
+    if (!formData.raw_answer.trim()) {
+      setMessage('intakeMessage', 'กรุณาใส่ข้อความก่อนบันทึก');
+      return;
+    }
+
+    setMessage('intakeMessage', 'กำลังบันทึกข้อมูล...');
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        setMessage('intakeMessage', res.message + ' | record_id: ' + res.record_id);
+        clearForm();
+        loadDashboard();
+      })
+      .withFailureHandler(function(err) {
+        setMessage('intakeMessage', 'เกิดข้อผิดพลาด: ' + err.message);
+      })
+      .webSaveRawKnowledge(formData);
+  }
+
+  function saveAndAnalyze() {
+    const formData = getFormData();
+
+    if (!formData.raw_answer.trim()) {
+      setMessage('intakeMessage', 'กรุณาใส่ข้อความก่อนบันทึก');
+      return;
+    }
+
+    setMessage('intakeMessage', 'กำลังบันทึกข้อมูล...');
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        setMessage('intakeMessage', 'บันทึกแล้ว กำลังวิเคราะห์ด้วย AI...');
+
+        google.script.run
+          .withSuccessHandler(function(result) {
+            setMessage('intakeMessage', 'บันทึกและวิเคราะห์เรียบร้อยแล้ว: ' + result.message);
+            clearForm();
+            loadDashboard();
+          })
+          .withFailureHandler(function(err) {
+            setMessage('intakeMessage', 'บันทึกแล้ว แต่ AI วิเคราะห์ไม่สำเร็จ: ' + err.message);
+          })
+          .webAnalyzeAllPendingRecords();
+      })
+      .withFailureHandler(function(err) {
+        setMessage('intakeMessage', 'เกิดข้อผิดพลาด: ' + err.message);
+      })
+      .webSaveRawKnowledge(formData);
+  }
+
+  function runAnalysis() {
+    setMessage('analysisMessage', 'กำลังวิเคราะห์ข้อมูลที่รอด้วย Gemini AI...');
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        setMessage('analysisMessage', res.message);
+        loadAnalysis();
+        loadDashboard();
+      })
+      .withFailureHandler(function(err) {
+        setMessage('analysisMessage', 'เกิดข้อผิดพลาด: ' + err.message);
+      })
+      .webAnalyzeAllPendingRecords();
+  }
+
+  function loadAnalysis() {
+    document.getElementById('analysisList').innerHTML = '<div class="item-card">กำลังโหลดผลวิเคราะห์...</div>';
+
+    google.script.run
+      .withSuccessHandler(function(list) {
+        if (!list || list.length === 0) {
+          document.getElementById('analysisList').innerHTML = '<div class="item-card">ยังไม่มีผลวิเคราะห์</div>';
+          return;
+        }
+
+        let html = '';
+
+        list.forEach(item => {
+          html += `
+            <div class="item-card">
+              <h3>${escapeHtml(item.knowledge_category || 'Untitled Analysis')}</h3>
+              <div class="meta">
+                <span class="tag">${escapeHtml(item.record_id || '')}</span>
+                <span class="tag">${escapeHtml(item.confidence_level || 'Medium')}</span>
+                <span class="tag">${escapeHtml(item.review_status || '')}</span>
+              </div>
+              <p><span class="field-title">Key Insight:</span> ${escapeHtml(item.key_insight || '')}</p>
+              <p><span class="field-title">Hidden Technique:</span> ${escapeHtml(item.hidden_technique || '')}</p>
+              <p><span class="field-title">Common Problem:</span> ${escapeHtml(item.common_problem || '')}</p>
+              <p><span class="field-title">Solution Pattern:</span> ${escapeHtml(item.solution_pattern || '')}</p>
+              <p><span class="field-title">Risk Warning:</span> ${escapeHtml(item.risk_warning || '')}</p>
+              <p><span class="field-title">Keywords:</span> ${escapeHtml(item.keywords || '')}</p>
+            </div>
+          `;
+        });
+
+        document.getElementById('analysisList').innerHTML = html;
+      })
+      .withFailureHandler(function(err) {
+        document.getElementById('analysisList').innerHTML =
+          '<div class="item-card">เกิดข้อผิดพลาด: ' + escapeHtml(err.message) + '</div>';
+      })
+      .webGetAnalysisList();
+  }
+
+  function generateCards() {
+    setMessage('cardsMessage', 'กำลังสร้าง Knowledge Cards...');
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        setMessage('cardsMessage', res.message);
+        loadCards();
+        loadDashboard();
+      })
+      .withFailureHandler(function(err) {
+        setMessage('cardsMessage', 'เกิดข้อผิดพลาด: ' + err.message);
+      })
+      .webGenerateKnowledgeCards();
+  }
+
+  function loadCards() {
+    document.getElementById('cardsList').innerHTML = '<div class="item-card">กำลังโหลด Knowledge Cards...</div>';
+
+    google.script.run
+      .withSuccessHandler(function(list) {
+        if (!list || list.length === 0) {
+          document.getElementById('cardsList').innerHTML = '<div class="item-card">ยังไม่มี Knowledge Card</div>';
+          return;
+        }
+
+        let html = '';
+
+        list.forEach(card => {
+          html += `
+            <div class="item-card">
+              <h3>${escapeHtml(card.title || 'Untitled Card')}</h3>
+              <div class="meta">
+                <span class="tag">${escapeHtml(card.card_id || '')}</span>
+                <span class="tag">${escapeHtml(card.department || '')}</span>
+                <span class="tag">${escapeHtml(card.approval_status || '')}</span>
+              </div>
+              <p><span class="field-title">Summary:</span> ${escapeHtml(card.summary || '')}</p>
+              <p><span class="field-title">Tacit Insight:</span> ${escapeHtml(card.tacit_insight || '')}</p>
+              <p><span class="field-title">Lesson Learned:</span> ${escapeHtml(card.lesson_learned || '')}</p>
+              <p><span class="field-title">Hidden Technique:</span> ${escapeHtml(card.hidden_technique || '')}</p>
+              <p><span class="field-title">Practical Guide:</span> ${escapeHtml(card.practical_guide || '')}</p>
+              <p><span class="field-title">Risk Warning:</span> ${escapeHtml(card.risk_warning || '')}</p>
+              <p><span class="field-title">Keywords:</span> ${escapeHtml(card.keywords || '')}</p>
+            </div>
+          `;
+        });
+
+        document.getElementById('cardsList').innerHTML = html;
+      })
+      .withFailureHandler(function(err) {
+        document.getElementById('cardsList').innerHTML =
+          '<div class="item-card">เกิดข้อผิดพลาด: ' + escapeHtml(err.message) + '</div>';
+      })
+      .webGetKnowledgeCards();
+  }
+
+  function askChat() {
+    const input = document.getElementById('chatQuestion');
+    const question = input.value.trim();
+
+    if (!question) return;
+
+    addChatBubble(question, 'user');
+    input.value = '';
+
+    const waitingId = addChatBubble('กำลังค้นหาความรู้และให้ AI Workmate ช่วยตอบ...', 'bot');
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        const bubble = document.getElementById(waitingId);
+        bubble.textContent = res.answer;
+        loadDashboard();
+      })
+      .withFailureHandler(function(err) {
+        const bubble = document.getElementById(waitingId);
+        bubble.textContent = 'เกิดข้อผิดพลาด: ' + err.message;
+      })
+      .webAskKnowledgeChat(question);
+  }
+
+  function addChatBubble(text, type) {
+    const chatBox = document.getElementById('chatBox');
+    const div = document.createElement('div');
+    const id = 'bubble_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+
+    div.id = id;
+    div.className = type === 'user' ? 'user-bubble' : 'bot-bubble';
+    div.textContent = text;
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    return id;
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+
+
+  function fillQuestion(text) {
+    const input = document.getElementById('chatQuestion');
+    if (input) {
+      input.value = text;
+      input.focus();
+    }
+  }
+
+
+
+
+</script>
