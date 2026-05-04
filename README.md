@@ -45,3 +45,47 @@ Knowledge Card Generation
 AI Workmate Knowledge Chat
         ↓
 Organizational Knowledge Transfer
+
+Google Sheet Structure
+
+The system uses four main sheets:
+
+RAW_KNOWLEDGE
+AI_ANALYSIS
+KNOWLEDGE_CARD
+CHAT_LOG
+Main Modules
+1. Knowledge Intake
+
+Collects staff-written documents, reflections, or interview transcripts.
+
+2. AI Analysis
+
+Uses Gemini API to extract tacit knowledge, key insights, hidden techniques, risks, solutions, and keywords.
+
+3. Knowledge Cards
+
+Transforms AI analysis results into structured knowledge cards for review and reuse.
+
+4. AI Workmate Knowledge Chat
+
+Allows users to ask questions based on the knowledge cards stored in the system.
+
+Prototype Status
+
+This project is currently a working prototype developed for organizational innovation and future expansion.
+
+Future Development
+GitHub-based version control with clasp
+Audio-to-knowledge workflow
+Google Docs / PDF export
+NotebookLM integration
+User authentication and role-based access
+Enhanced search and filtering
+Dashboard analytics for knowledge management
+Security Note
+
+The Gemini API key is not stored in this repository. It should be configured securely in Google Apps Script Script Properties.
+
+```text
+Update project README
