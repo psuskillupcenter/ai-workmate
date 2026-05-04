@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>AI Workmate: Knowledge Legacy</title>
+  <?!= include('Style'); ?>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div>
+          <h1>AI Workmate</h1>
+          <p>Knowledge Legacy</p>
+        </div>
+      </div>
+
+      <div class="side-section-title">MAIN MENU</div>
+
+      <button class="nav active" onclick="showPage('dashboardPage', this); loadDashboard();">
+        <span>◎</span> Dashboard
+      </button>
+
+      <button class="nav" onclick="showPage('intakePage', this);">
+        <span>＋</span> Knowledge Intake
+      </button>
+
+      <button class="nav" onclick="showPage('analysisPage', this); loadAnalysis();">
+        <span>✦</span> AI Analysis
+      </button>
+
+      <button class="nav" onclick="showPage('cardsPage', this); loadCards();">
+        <span>▣</span> Knowledge Cards
+      </button>
+
+      <button class="nav" onclick="showPage('chatPage', this);">
+        <span>💬</span> AI Workmate Chat
+      </button>
+
+      <div class="sidebar-note">
+        <strong>AI Workflow</strong>
+        <p>Capture → Analyze → Structure → Retrieve</p>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <section id="dashboardPage" class="page">
+        <div class="top-nav">
+          <div class="search-pill">
+            <span>⌕</span>
+            <input placeholder="Search organizational knowledge..." disabled>
+          </div>
+          <div class="top-actions">
+            <button class="small-pill">Gemini API</button>
+            <button class="small-pill active-pill">Prototype v0.1</button>
+          </div>
+        </div>
+
+        <div class="hero-section">
+          <div class="hero-copy">
+            <span class="eyebrow">AI-Powered Organizational Memory</span>
+            <h2>AI Workmate:<br>Knowledge Legacy</h2>
+            <p>
+              เปลี่ยนประสบการณ์บุคลากรให้เป็นปัญญาองค์กรที่ค้นหาและถ่ายทอดได้
+              ด้วย Gemini AI, Knowledge Cards และ AI Workmate Chat
+            </p>
+
+            <div class="hero-buttons">
+              <button class="btn hero-btn" onclick="showPage('intakePage', document.querySelectorAll('.nav')[1]);">
+                Start Knowledge Intake
+              </button>
+              <button class="btn outline-btn" onclick="showPage('chatPage', document.querySelectorAll('.nav')[4]);">
+                Ask AI Workmate
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="ai-orb">AI</div>
+            <div class="floating-card card-a">
+              <strong>Knowledge Cards</strong>
+              <span>Structured tacit knowledge</span>
+            </div>
+            <div class="floating-card card-b">
+              <strong>Gemini Analysis</strong>
+              <span>Insight extraction engine</span>
+            </div>
+            <div class="floating-card card-c">
+              <strong>AI Chat</strong>
+              <span>Ask from knowledge base</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="icon-box">01</div>
+            <span>Raw Knowledge</span>
+            <strong id="rawCount">-</strong>
+            <small>ข้อมูลประสบการณ์ที่นำเข้า</small>
+          </div>
+
+          <div class="kpi-card">
+            <div class="icon-box">02</div>
+            <span>AI Analysis</span>
+            <strong id="analysisCount">-</strong>
+            <small>ผลวิเคราะห์จาก Gemini</small>
+          </div>
+
+          <div class="kpi-card">
+            <div class="icon-box">03</div>
+            <span>Knowledge Cards</span>
+            <strong id="cardCount">-</strong>
+            <small>องค์ความรู้พร้อมตรวจทาน</small>
+          </div>
+
+          <div class="kpi-card">
+            <div class="icon-box">04</div>
+            <span>Chat Logs</span>
+            <strong id="chatCount">-</strong>
+            <small>คำถามที่ทดลองถาม AI</small>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="feature-panel">
+            <span class="section-label">AI WORKFLOW</span>
+            <h3>Knowledge Legacy Flow</h3>
+            <div class="flow-timeline">
+              <div>
+                <b>Capture</b>
+                <p>รับข้อความประสบการณ์จากบุคลากร</p>
+              </div>
+              <div>
+                <b>Analyze</b>
+                <p>ใช้ Gemini AI วิเคราะห์ Tacit Knowledge</p>
+              </div>
+              <div>
+                <b>Structure</b>
+                <p>สร้าง Knowledge Card ที่ตรวจทานได้</p>
+              </div>
+              <div>
+                <b>Retrieve</b>
+                <p>ถามตอบผ่าน AI Workmate Chat</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-panel">
+            <span class="section-label">SYSTEM STATUS</span>
+            <h3>Processing Overview</h3>
+            <div class="status-row">
+              <span>Pending Analysis</span>
+              <strong id="pendingCount">-</strong>
+            </div>
+            <div class="status-row">
+              <span>Analyzed</span>
+              <strong id="analyzedCount">-</strong>
+            </div>
+            <button class="btn mini-refresh" onclick="loadDashboard()">Refresh Dashboard</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="intakePage" class="page hidden">
+        <div class="page-header">
+          <span class="eyebrow dark">KNOWLEDGE CAPTURE</span>
+          <h2>Knowledge Intake</h2>
+          <p>นำเข้าข้อความจากเอกสารที่ผู้ทดสอบพิมพ์มา เพื่อให้ AI วิเคราะห์และสกัดความรู้ฝังลึก</p>
+        </div>
+
+        <div class="form-layout">
+          <div class="panel form-panel">
+            <label>ชื่อเอกสาร / หัวข้อความรู้</label>
+            <input id="document_title" placeholder="เช่น เทคนิคการตรวจสอบเอกสารจบการศึกษา">
+
+            <div class="two-col">
+              <div>
+                <label>ชื่อผู้ให้ความรู้</label>
+                <input id="staff_name" placeholder="เช่น คุณสมใจ">
+              </div>
+              <div>
+                <label>หน่วยงาน</label>
+                <input id="department" placeholder="เช่น งานทะเบียน">
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div>
+                <label>ตำแหน่ง</label>
+                <input id="position" placeholder="เช่น เจ้าหน้าที่อาวุโส">
+              </div>
+              <div>
+                <label>ความเชี่ยวชาญ</label>
+                <input id="expertise_area" placeholder="เช่น งานบริการนักศึกษา">
+              </div>
+            </div>
+
+            <label>คำถามหรือหัวข้อ</label>
+            <input id="interview_question" placeholder="เช่น งานนี้มีข้อควรระวังอะไรบ้าง">
+
+            <label>ข้อความที่ผู้ทดสอบพิมพ์มา</label>
+            <textarea id="raw_answer" placeholder="วางข้อความจากเอกสารหรือประสบการณ์ที่ต้องการให้ AI วิเคราะห์"></textarea>
+
+            <label>หมายเหตุ</label>
+            <input id="notes" placeholder="เช่น ข้อมูลทดลอง / รอตรวจทาน">
+
+            <div class="button-row">
+              <button class="btn primary" onclick="saveKnowledge()">Save Knowledge</button>
+              <button class="btn glow" onclick="saveAndAnalyze()">Save & Analyze with AI</button>
+            </div>
+
+            <div id="intakeMessage" class="message"></div>
+          </div>
+
+          <div class="guide-card">
+            <span class="section-label">GUIDE</span>
+            <h3>AI-ready Input</h3>
+            <p>ข้อมูลที่เหมาะกับการวิเคราะห์ควรเป็นข้อความเล่าประสบการณ์จริง เช่น ปัญหาที่เคยพบ วิธีแก้ไข เทคนิคที่ใช้จริง และข้อควรระวัง</p>
+            <ul>
+              <li>ใช้ข้อความจากผู้ปฏิบัติงานจริง</li>
+              <li>ระบุบริบทของงานให้ชัด</li>
+              <li>เน้นบทเรียนและวิธีคิดจากประสบการณ์</li>
+              <li>หลีกเลี่ยงข้อมูลส่วนบุคคลที่ไม่จำเป็น</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="analysisPage" class="page hidden">
+        <div class="page-header with-actions">
+          <div>
+            <span class="eyebrow dark">GEMINI INTELLIGENCE</span>
+            <h2>AI Analysis</h2>
+            <p>ผลการสกัด Tacit Knowledge โดย Gemini API</p>
+          </div>
+          <div>
+            <button class="btn glow" onclick="runAnalysis()">Analyze Pending</button>
+            <button class="btn secondary" onclick="loadAnalysis()">Refresh</button>
+          </div>
+        </div>
+
+        <div id="analysisMessage" class="message"></div>
+        <div id="analysisList" class="list"></div>
+      </section>
+
+      <section id="cardsPage" class="page hidden">
+        <div class="page-header with-actions">
+          <div>
+            <span class="eyebrow dark">STRUCTURED KNOWLEDGE</span>
+            <h2>Knowledge Cards</h2>
+            <p>การ์ดความรู้ที่แปลงจากผลวิเคราะห์ AI เพื่อใช้ตรวจทานและถ่ายทอดต่อ</p>
+          </div>
+          <div>
+            <button class="btn glow" onclick="generateCards()">Generate Cards</button>
+            <button class="btn secondary" onclick="loadCards()">Refresh</button>
+          </div>
+        </div>
+
+        <div id="cardsMessage" class="message"></div>
+        <div id="cardsList" class="card-list"></div>
+      </section>
+
+      <section id="chatPage" class="page hidden">
+        <div class="page-header">
+          <span class="eyebrow dark">AI WORKMATE CHAT</span>
+          <h2>AI Workmate Knowledge Chat</h2>
+          <p>ผู้ช่วยถาม–ตอบจากฐานความรู้ฝังลึกขององค์กร</p>
+        </div>
+
+        <div class="chat-layout">
+          <div class="chat-panel">
+            <div id="chatBox" class="chat-box">
+              <div class="bot-bubble">
+                สวัสดีค่ะ ฉันคือ AI Workmate Knowledge Chat ผู้ช่วยค้นคืนความรู้จากประสบการณ์ของบุคลากรในองค์กร ลองถามคำถามจากฐานความรู้ที่ระบบสกัดไว้ได้เลยค่ะ
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input id="chatQuestion" placeholder="เช่น เจ้าหน้าที่ใหม่ควรระวังอะไรจากความรู้ที่มีในระบบ?">
+              <button class="btn glow" onclick="askChat()">Ask AI</button>
+            </div>
+          </div>
+
+          <div class="guide-card chat-guide">
+            <span class="section-label">SAMPLE QUESTIONS</span>
+            <h3>ลองถามแบบนี้</h3>
+            <button onclick="fillQuestion('เจ้าหน้าที่ใหม่ควรระวังอะไรจากความรู้ที่มีในระบบ?')">เจ้าหน้าที่ใหม่ควรระวังอะไร?</button>
+            <button onclick="fillQuestion('มีเทคนิคอะไรที่ไม่มีในคู่มือแต่ควรรู้?')">เทคนิคที่ไม่มีในคู่มือคืออะไร?</button>
+            <button onclick="fillQuestion('จากความรู้ที่มี มีปัญหาที่พบบ่อยอะไรบ้าง?')">ปัญหาที่พบบ่อยคืออะไร?</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <?!= include('Script'); ?>
+</body>
+</html>
