@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Workmate: Knowledge Legacy</title>
+
+  <style>
+    :root {
+      --navy: #062a5b;
+      --deep-blue: #073b82;
+      --blue: #0b74d1;
+      --sky: #55c7ff;
+      --soft-blue: #eaf5ff;
+      --white: #ffffff;
+      --text: #15304f;
+      --muted: #6d8299;
+      --border: rgba(11, 116, 209, 0.16);
+      --shadow: 0 24px 70px rgba(7, 59, 130, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(85,199,255,0.26), transparent 30%),
+        radial-gradient(circle at 96% 20%, rgba(18,150,243,0.16), transparent 30%),
+        linear-gradient(180deg, #f8fcff 0%, #eaf5ff 100%);
+      min-height: 100vh;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 14px 32px rgba(85,199,255,0.36);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--navy);
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-badge {
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: white;
+      border: 1px solid var(--border);
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(7, 59, 130, 0.08);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: center;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      padding: 44px;
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(85,199,255,0.45), transparent 30%),
+        linear-gradient(135deg, #073b82 0%, #0b74d1 58%, #1296f3 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "AI WORKMATE";
+      position: absolute;
+      right: 22px;
+      bottom: -6px;
+      color: rgba(255,255,255,0.08);
+      font-size: 76px;
+      font-weight: 900;
+      letter-spacing: -3px;
+      white-space: nowrap;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+    }
+
+    .hero h2 {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(40px, 6vw, 66px);
+      line-height: 1.02;
+      margin: 20px 0 18px;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 2;
+      color: #e8f8ff;
+      font-size: 17px;
+      line-height: 1.75;
+      max-width: 660px;
+      margin: 0;
+    }
+
+    .actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 900;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--blue);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+    }
+
+    .btn-secondary {
+      color: white;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .visual {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 20px 52px rgba(7, 59, 130, 0.12);
+    }
+
+    .panel h3 {
+      color: var(--navy);
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .workflow {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px;
+      background: #f4fbff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .mini-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(7, 59, 130, 0.1);
+    }
+
+    .mini-card strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .mini-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    footer {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 0 0 26px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 30px;
+      }
+
+      .hero::after {
+        font-size: 44px;
+      }
+
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div>
+          <h1>AI Workmate</h1>
+          <p>Knowledge Legacy Module</p>
+        </div>
+      </div>
+
+      <div class="top-badge">Prototype v0.1</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <span class="eyebrow">AI-Powered Organizational Memory</span>
+        <h2>AI Workmate:<br>Knowledge Legacy</h2>
+        <p>
+          ระบบต้นแบบสำหรับสกัด จัดหมวด และสืบทอดความรู้ฝังลึกขององค์กร
+          โดยใช้ Gemini AI เปลี่ยนประสบการณ์บุคลากรให้เป็น Knowledge Cards
+          และถามตอบผ่าน AI Workmate Knowledge Chat
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbyyCD8LCg-GOOoE8W1VyC5zna32sDV57FbN2yen1vJvBx3gLHVnOwAz3-9m67DzRvXW/exec" target="_blank" rel="noopener">
+            Enter AI Workmate System
+          </a>
+
+          <a class="btn btn-secondary" href="#workflow">
+            View Workflow
+          </a>
+        </div>
+      </section>
+
+      <section class="visual">
+        <div class="panel" id="workflow">
+          <h3>Knowledge Legacy Flow</h3>
+          <p>
+            From staff-written experience to structured organizational intelligence.
+          </p>
+
+          <div class="workflow">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div>
+                <strong>Capture</strong>
+                <span>นำเข้าข้อความประสบการณ์จากบุคลากรหรือเอกสารที่ผู้ทดสอบพิมพ์มา</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+              <div>
+                <strong>Analyze</strong>
+                <span>ใช้ Gemini AI วิเคราะห์ Tacit Knowledge และจัดหมวดหมู่ความรู้</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+              <div>
+                <strong>Structure</strong>
+                <span>สร้าง Knowledge Cards เพื่อใช้ตรวจทานและถ่ายทอดต่อ</span>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">4</div>
+              <div>
+                <strong>Retrieve</strong>
+                <span>ถามตอบจากฐานความรู้ผ่าน AI Workmate Knowledge Chat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini-card">
+            <strong>Gemini AI</strong>
+            <span>สกัด insight, hidden technique, risk warning และ solution pattern</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>Google Sheets</strong>
+            <span>ใช้เป็นฐานข้อมูลกลางสำหรับ Raw Knowledge, Analysis, Cards และ Chat Logs</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>Apps Script</strong>
+            <span>ทำหน้าที่เป็น Web App และเชื่อมต่อ AI Workflow</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>GitHub</strong>
+            <span>ใช้เก็บ source code และรองรับการพัฒนาต่อยอด</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      AI Workmate: Knowledge Legacy | Prototype for AI-assisted tacit knowledge transfer
+    </footer>
+  </div>
+</body>
+</html>
