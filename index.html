@@ -3,322 +3,662 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Workmate: Knowledge Legacy</title>
-
+  <title>AI Workmate | Knowledge Legacy</title>
   <style>
-    :root {
-      --navy: #062a5b;
-      --deep-blue: #073b82;
-      --blue: #0b74d1;
-      --sky: #55c7ff;
-      --soft-blue: #eaf5ff;
-      --white: #ffffff;
-      --text: #15304f;
-      --muted: #6d8299;
-      --border: rgba(11, 116, 209, 0.16);
-      --shadow: 0 24px 70px rgba(7, 59, 130, 0.18);
+    :root{
+      --purple:#7b4dff;
+      --purple2:#915dff;
+      --blue:#34a8ff;
+      --blue2:#168dff;
+      --dark:#14345b;
+      --text:#29496b;
+      --muted:#7e90a8;
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --border:rgba(22,141,255,0.12);
+      --shadow:0 18px 45px rgba(49, 114, 197, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
+    *{
+      box-sizing:border-box;
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 0%, rgba(85,199,255,0.26), transparent 30%),
-        radial-gradient(circle at 96% 20%, rgba(18,150,243,0.16), transparent 30%),
-        linear-gradient(180deg, #f8fcff 0%, #eaf5ff 100%);
-      min-height: 100vh;
+    html{
+      scroll-behavior:smooth;
     }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
 
-    header {
-      width: min(1180px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 22px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    a{
+      text-decoration:none;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+    .container{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
     }
 
-    .brand-mark {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--sky), var(--blue));
-      color: white;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      box-shadow: 0 14px 32px rgba(85,199,255,0.36);
+    /* NAVBAR */
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(255,255,255,0.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(0,0,0,0.04);
     }
 
-    .brand h1 {
-      margin: 0;
-      font-size: 20px;
-      color: var(--navy);
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px 0;
+      gap:16px;
     }
 
-    .brand p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 13px;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
-    .top-badge {
-      padding: 10px 16px;
-      border-radius: 999px;
-      color: var(--blue);
-      background: white;
-      border: 1px solid var(--border);
-      font-weight: 800;
-      box-shadow: 0 10px 30px rgba(7, 59, 130, 0.08);
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:900;
+      background:linear-gradient(135deg, var(--blue), var(--purple));
+      box-shadow:0 10px 28px rgba(88, 104, 255, 0.28);
     }
 
-    main {
-      width: min(1180px, calc(100% - 36px));
-      margin: 0 auto;
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 28px;
-      align-items: center;
-      padding: 28px 0 56px;
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      color:var(--dark);
     }
 
-    .hero {
-      padding: 44px;
-      border-radius: 36px;
-      background:
-        radial-gradient(circle at 84% 18%, rgba(85,199,255,0.45), transparent 30%),
-        linear-gradient(135deg, #073b82 0%, #0b74d1 58%, #1296f3 100%);
-      color: white;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+    .brand p{
+      margin:3px 0 0;
+      font-size:12px;
+      color:var(--muted);
     }
 
-    .hero::after {
-      content: "AI WORKMATE";
-      position: absolute;
-      right: 22px;
-      bottom: -6px;
-      color: rgba(255,255,255,0.08);
-      font-size: 76px;
-      font-weight: 900;
-      letter-spacing: -3px;
-      white-space: nowrap;
+    .nav-links{
+      display:flex;
+      gap:24px;
+      align-items:center;
+      flex-wrap:wrap;
     }
 
-    .eyebrow {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.18);
-      color: white;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.6px;
+    .nav-links a{
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
     }
 
-    .hero h2 {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(40px, 6vw, 66px);
-      line-height: 1.02;
-      margin: 20px 0 18px;
-      letter-spacing: -2px;
+    .nav-btn{
+      padding:12px 18px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:800;
+      background:linear-gradient(135deg, var(--blue2), var(--purple));
+      box-shadow:0 12px 30px rgba(72, 114, 255, 0.24);
     }
 
-    .hero p {
-      position: relative;
-      z-index: 2;
-      color: #e8f8ff;
-      font-size: 17px;
-      line-height: 1.75;
-      max-width: 660px;
-      margin: 0;
+    /* HERO */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      color:#fff;
     }
 
-    .actions {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
+    .hero::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-1px;
+      width:100%;
+      height:120px;
+      background:var(--bg);
+      border-top-left-radius:55% 100%;
+      border-top-right-radius:55% 100%;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      border-radius: 999px;
-      padding: 14px 22px;
-      font-weight: 900;
-      transition: 0.2s ease;
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      min-height:720px;
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      align-items:center;
+      gap:20px;
+      padding:70px 0 130px;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
+    .hero-copy{
+      max-width:560px;
     }
 
-    .btn-primary {
-      background: white;
-      color: var(--blue);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+    .eyebrow{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.18);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:18px;
     }
 
-    .btn-secondary {
-      color: white;
-      background: rgba(255,255,255,0.16);
-      border: 1px solid rgba(255,255,255,0.3);
+    .hero h2{
+      font-size:60px;
+      line-height:1.04;
+      margin:0 0 18px;
+      letter-spacing:-2px;
     }
 
-    .visual {
-      display: grid;
-      gap: 18px;
+    .hero h2 span{
+      color:#fefefe;
+      opacity:0.95;
     }
 
-    .panel {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 26px;
-      box-shadow: 0 20px 52px rgba(7, 59, 130, 0.12);
+    .hero p{
+      margin:0;
+      font-size:17px;
+      line-height:1.8;
+      color:#eef6ff;
+      max-width:520px;
     }
 
-    .panel h3 {
-      color: var(--navy);
-      margin: 0 0 14px;
-      font-size: 24px;
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:28px;
     }
 
-    .panel p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 0;
+    .btn-primary{
+      padding:14px 22px;
+      border-radius:999px;
+      background:#ff4fd8;
+      color:#fff;
+      font-weight:800;
+      box-shadow:0 14px 30px rgba(255,79,216,0.28);
     }
 
-    .workflow {
-      display: grid;
-      gap: 12px;
-      margin-top: 18px;
+    .btn-secondary{
+      padding:14px 22px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.14);
+      color:#fff;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,0.3);
     }
 
-    .step {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px;
-      background: #f4fbff;
-      border: 1px solid var(--border);
-      border-radius: 18px;
+    /* HERO VISUAL */
+    .hero-visual{
+      position:relative;
+      min-height:560px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
     }
 
-    .step-number {
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--sky), var(--blue));
-      color: white;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      flex: 0 0 auto;
+    .bg-circle{
+      position:absolute;
+      width:430px;
+      height:430px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0.03));
+      filter:blur(1px);
     }
 
-    .step strong {
-      display: block;
-      color: var(--navy);
-      margin-bottom: 4px;
+    .phone{
+      position:relative;
+      z-index:3;
+      width:280px;
+      height:560px;
+      border-radius:42px;
+      background:#111;
+      padding:12px;
+      box-shadow:0 28px 65px rgba(0,0,0,0.28);
+      transform:rotate(6deg);
     }
 
-    .step span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+    .phone::before{
+      content:"";
+      position:absolute;
+      top:10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:120px;
+      height:28px;
+      background:#111;
+      border-radius:0 0 20px 20px;
+      z-index:5;
     }
 
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+    .screen{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      border-radius:32px;
+      background:#ffffff;
+      position:relative;
     }
 
-    .mini-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 16px 40px rgba(7, 59, 130, 0.1);
+    .screen-top{
+      padding:18px 16px 12px;
+      background:linear-gradient(135deg, var(--blue), var(--purple));
+      color:white;
     }
 
-    .mini-card strong {
-      display: block;
-      color: var(--blue);
-      margin-bottom: 8px;
+    .screen-top .mini-title{
+      font-size:12px;
+      opacity:0.9;
+      margin-bottom:8px;
+      font-weight:700;
     }
 
-    .mini-card span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+    .screen-top h3{
+      margin:0;
+      font-size:18px;
+      line-height:1.3;
     }
 
-    footer {
-      width: min(1180px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 0 0 26px;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
+    .screen-body{
+      padding:14px;
+      background:#f8fbff;
+      height:calc(100% - 95px);
     }
 
-    @media (max-width: 900px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
+    .mock-box{
+      background:white;
+      border-radius:16px;
+      box-shadow:0 8px 22px rgba(47,93,153,0.08);
+      border:1px solid rgba(0,0,0,0.03);
+      margin-bottom:12px;
+      padding:12px;
+    }
+
+    .mock-row{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .mock-stat{
+      height:54px;
+      border-radius:14px;
+      background:linear-gradient(180deg, #f0f7ff, #ffffff);
+      border:1px solid rgba(22,141,255,0.08);
+    }
+
+    .mock-banner{
+      height:92px;
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(22,141,255,0.14), rgba(123,77,255,0.14));
+      margin-bottom:12px;
+    }
+
+    .mock-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .mock-item{
+      height:42px;
+      border-radius:12px;
+      background:#eef5ff;
+    }
+
+    .floating-tag{
+      position:absolute;
+      z-index:4;
+      background:#fff;
+      color:var(--dark);
+      border-radius:18px;
+      padding:14px 16px;
+      min-width:170px;
+      box-shadow:var(--shadow);
+      font-size:13px;
+    }
+
+    .floating-tag strong{
+      display:block;
+      margin-bottom:4px;
+      color:var(--blue2);
+    }
+
+    .tag-1{
+      left:20px;
+      top:70px;
+    }
+
+    .tag-2{
+      right:12px;
+      bottom:100px;
+    }
+
+    /* FEATURES */
+    .features{
+      position:relative;
+      z-index:2;
+      margin-top:-40px;
+      padding-bottom:70px;
+    }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:18px;
+    }
+
+    .feature-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:26px 20px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .feature-icon{
+      width:54px;
+      height:54px;
+      margin:0 auto 16px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-size:20px;
+      font-weight:900;
+      background:linear-gradient(135deg, var(--blue2), var(--purple));
+    }
+
+    .feature-card h3{
+      margin:0 0 10px;
+      color:var(--dark);
+      font-size:18px;
+    }
+
+    .feature-card p{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .feature-card a{
+      color:var(--blue2);
+      font-weight:800;
+      font-size:13px;
+    }
+
+    /* ABOUT */
+    .section{
+      padding:30px 0 80px;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:38px;
+    }
+
+    .section-title span{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      background:#eef5ff;
+      color:var(--blue2);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .section-title h2{
+      margin:16px 0 10px;
+      color:var(--dark);
+      font-size:40px;
+      letter-spacing:-1px;
+    }
+
+    .section-title p{
+      max-width:720px;
+      margin:0 auto;
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:center;
+    }
+
+    .about-box{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .about-box h3{
+      margin-top:0;
+      color:var(--dark);
+      font-size:26px;
+    }
+
+    .about-box p{
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .about-list{
+      margin:18px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+
+    .about-list li{
+      padding:12px 14px;
+      border-radius:14px;
+      background:#f6fbff;
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:16px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+
+    .stat-card strong{
+      display:block;
+      color:var(--blue2);
+      font-size:30px;
+      margin-bottom:8px;
+    }
+
+    .stat-card span{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    /* CTA */
+    .cta{
+      padding-bottom:80px;
+    }
+
+    .cta-box{
+      border-radius:30px;
+      padding:42px;
+      background:linear-gradient(135deg, var(--blue2), var(--purple));
+      color:#fff;
+      text-align:center;
+      box-shadow:0 24px 60px rgba(73, 103, 215, 0.22);
+    }
+
+    .cta-box h2{
+      margin:0 0 12px;
+      font-size:40px;
+      letter-spacing:-1px;
+    }
+
+    .cta-box p{
+      margin:0 auto 24px;
+      max-width:760px;
+      line-height:1.8;
+      color:#eef6ff;
+    }
+
+    .cta-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:14px;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#fff;
+      border-top:1px solid rgba(0,0,0,0.04);
+      padding:22px 0;
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px){
+      .hero-inner{
+        grid-template-columns:1fr;
+        text-align:center;
       }
 
-      main {
-        grid-template-columns: 1fr;
+      .hero-copy{
+        max-width:100%;
+        margin:0 auto;
       }
 
-      .hero {
-        padding: 30px;
+      .hero p{
+        margin:0 auto;
       }
 
-      .hero::after {
-        font-size: 44px;
+      .hero-actions{
+        justify-content:center;
       }
 
-      .mini-grid {
-        grid-template-columns: 1fr;
+      .feature-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .about-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-visual{
+        min-height:500px;
+      }
+
+      .tag-1{
+        left:40px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .nav-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .nav-links{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .hero{
+        text-align:center;
+      }
+
+      .hero h2{
+        font-size:40px;
+      }
+
+      .phone{
+        width:230px;
+        height:470px;
+      }
+
+      .feature-grid{
+        grid-template-columns:1fr;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+
+      .cta-box{
+        padding:28px 20px;
+      }
+
+      .cta-box h2{
+        font-size:30px;
+      }
+
+      .floating-tag{
+        position:static;
+        margin:12px auto 0;
+      }
+
+      .hero-visual{
+        display:block;
+        min-height:auto;
+      }
+
+      .bg-circle{
+        display:none;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="page">
-    <header>
+
+  <nav class="navbar">
+    <div class="container nav-inner">
       <div class="brand">
         <div class="brand-mark">AI</div>
         <div>
@@ -327,99 +667,199 @@
         </div>
       </div>
 
-      <div class="top-badge">Prototype v0.1</div>
-    </header>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#launch">Launch</a>
+        <a class="nav-btn" href="PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE" target="_blank">Open System</a>
+      </div>
+    </div>
+  </nav>
 
-    <main>
-      <section class="hero">
-        <span class="eyebrow">AI-Powered Organizational Memory</span>
-        <h2>AI Workmate:<br>Knowledge Legacy</h2>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">New Experience</span>
+        <h2>With Landing Page<br><span>AI Workmate</span></h2>
         <p>
-          ระบบต้นแบบสำหรับสกัด จัดหมวด และสืบทอดความรู้ฝังลึกขององค์กร
-          โดยใช้ Gemini AI เปลี่ยนประสบการณ์บุคลากรให้เป็น Knowledge Cards
-          และถามตอบผ่าน AI Workmate Knowledge Chat
+          ระบบต้นแบบสำหรับสกัด จัดหมวด และถ่ายทอดความรู้ฝังลึกขององค์กร
+          โดยใช้ Gemini AI เปลี่ยนประสบการณ์บุคลากรให้กลายเป็น Knowledge Cards
+          และถามตอบผ่าน AI Workmate Knowledge Chat ได้อย่างสะดวก
         </p>
 
-        <div class="actions">
-          <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbyyCD8LCg-GOOoE8W1VyC5zna32sDV57FbN2yen1vJvBx3gLHVnOwAz3-9m67DzRvXW/exec" target="_blank" rel="noopener">
-            Enter AI Workmate System
+        <div class="hero-actions">
+          <a class="btn-primary" href="PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE" target="_blank">
+            Enter System
           </a>
-
-          <a class="btn btn-secondary" href="#workflow">
-            View Workflow
+          <a class="btn-secondary" href="#about">
+            Watch Our Vision
           </a>
         </div>
-      </section>
+      </div>
 
-      <section class="visual">
-        <div class="panel" id="workflow">
-          <h3>Knowledge Legacy Flow</h3>
+      <div class="hero-visual">
+        <div class="bg-circle"></div>
+
+        <div class="floating-tag tag-1">
+          <strong>Gemini Analysis</strong>
+          วิเคราะห์ Tacit Knowledge อัตโนมัติ
+        </div>
+
+        <div class="phone">
+          <div class="screen">
+            <div class="screen-top">
+              <div class="mini-title">AI Workmate Dashboard</div>
+              <h3>Knowledge Legacy Interface</h3>
+            </div>
+
+            <div class="screen-body">
+              <div class="mock-row">
+                <div class="mock-stat"></div>
+                <div class="mock-stat"></div>
+                <div class="mock-stat"></div>
+              </div>
+
+              <div class="mock-banner"></div>
+
+              <div class="mock-box">
+                <div class="mock-list">
+                  <div class="mock-item"></div>
+                  <div class="mock-item"></div>
+                  <div class="mock-item"></div>
+                </div>
+              </div>
+
+              <div class="mock-box">
+                <div class="mock-list">
+                  <div class="mock-item"></div>
+                  <div class="mock-item"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floating-tag tag-2">
+          <strong>AI Chat</strong>
+          ถามตอบจากฐานความรู้ขององค์กร
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <h3>Easy To Use</h3>
+          <p>ใช้งานง่ายสำหรับการนำเข้าข้อมูล วิเคราะห์ และสร้างองค์ความรู้ใน workflow เดียว</p>
+          <a href="#about">READ MORE</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">★</div>
+          <h3>Awesome Design</h3>
+          <p>หน้า Landing และระบบหลักถูกออกแบบให้ดูทันสมัย เหมาะกับการใช้งานจริงและการนำเสนอ</p>
+          <a href="#about">READ MORE</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚙</div>
+          <h3>Easy to Customize</h3>
+          <p>สามารถปรับข้อความ สี ฟีเจอร์ และลิงก์ระบบให้เหมาะกับโครงการหรือองค์กรของคุณได้</p>
+          <a href="#about">READ MORE</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">∞</div>
+          <h3>Anytime Support</h3>
+          <p>ใช้เป็นหน้าทางเข้าระบบ AI Workmate และเชื่อมไปยัง Apps Script Web App ได้ทันที</p>
+          <a href="#launch">READ MORE</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-title">
+        <span>About Platform</span>
+        <h2>Organizational Knowledge in Action</h2>
+        <p>
+          AI Workmate: Knowledge Legacy คือระบบต้นแบบที่ช่วยเก็บ วิเคราะห์ และถ่ายทอด
+          Tacit Knowledge ของบุคลากร เพื่อไม่ให้ความรู้สำคัญสูญหายเมื่อมีการเกษียณ
+          เปลี่ยนบทบาท หรือส่งต่องาน
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-box">
+          <h3>What the system does</h3>
           <p>
-            From staff-written experience to structured organizational intelligence.
+            ระบบนี้เชื่อมการทำงานระหว่าง Google Sheets, Google Apps Script และ Gemini API
+            เพื่อรับข้อมูลประสบการณ์ของบุคลากร วิเคราะห์ insight สำคัญ สร้าง Knowledge Cards
+            และเปิดให้ถามตอบผ่าน AI Chat จากฐานความรู้ที่องค์กรสะสมไว้
           </p>
 
-          <div class="workflow">
-            <div class="step">
-              <div class="step-number">1</div>
-              <div>
-                <strong>Capture</strong>
-                <span>นำเข้าข้อความประสบการณ์จากบุคลากรหรือเอกสารที่ผู้ทดสอบพิมพ์มา</span>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">2</div>
-              <div>
-                <strong>Analyze</strong>
-                <span>ใช้ Gemini AI วิเคราะห์ Tacit Knowledge และจัดหมวดหมู่ความรู้</span>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">3</div>
-              <div>
-                <strong>Structure</strong>
-                <span>สร้าง Knowledge Cards เพื่อใช้ตรวจทานและถ่ายทอดต่อ</span>
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step-number">4</div>
-              <div>
-                <strong>Retrieve</strong>
-                <span>ถามตอบจากฐานความรู้ผ่าน AI Workmate Knowledge Chat</span>
-              </div>
-            </div>
-          </div>
+          <ul class="about-list">
+            <li>Capture staff-written experience</li>
+            <li>Analyze tacit knowledge with Gemini AI</li>
+            <li>Generate reusable knowledge cards</li>
+            <li>Enable AI-based knowledge retrieval</li>
+          </ul>
         </div>
 
-        <div class="mini-grid">
-          <div class="mini-card">
-            <strong>Gemini AI</strong>
-            <span>สกัด insight, hidden technique, risk warning และ solution pattern</span>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <strong>01</strong>
+            <span>Knowledge Intake จากเอกสารหรือข้อความที่บุคลากรพิมพ์มา</span>
           </div>
-
-          <div class="mini-card">
-            <strong>Google Sheets</strong>
-            <span>ใช้เป็นฐานข้อมูลกลางสำหรับ Raw Knowledge, Analysis, Cards และ Chat Logs</span>
+          <div class="stat-card">
+            <strong>02</strong>
+            <span>AI Analysis สำหรับสกัด key insight, hidden technique และ risk warning</span>
           </div>
-
-          <div class="mini-card">
-            <strong>Apps Script</strong>
-            <span>ทำหน้าที่เป็น Web App และเชื่อมต่อ AI Workflow</span>
+          <div class="stat-card">
+            <strong>03</strong>
+            <span>Knowledge Card สำหรับจัดโครงสร้างองค์ความรู้ให้พร้อมใช้งาน</span>
           </div>
-
-          <div class="mini-card">
-            <strong>GitHub</strong>
-            <span>ใช้เก็บ source code และรองรับการพัฒนาต่อยอด</span>
+          <div class="stat-card">
+            <strong>04</strong>
+            <span>AI Workmate Chat สำหรับถามตอบจากฐานความรู้ขององค์กร</span>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-      AI Workmate: Knowledge Legacy | Prototype for AI-assisted tacit knowledge transfer
-    </footer>
-  </div>
+  <section class="cta" id="launch">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Ready to enter the system?</h2>
+        <p>
+          เปิดใช้งาน AI Workmate: Knowledge Legacy เพื่อทดลอง workflow
+          ตั้งแต่การนำเข้าข้อมูล วิเคราะห์ด้วย AI สร้าง Knowledge Cards
+          ไปจนถึงการถามตอบจากฐานความรู้ขององค์กร
+        </p>
+
+        <div class="cta-actions">
+          <a class="btn-primary" href="https://script.google.com/macros/s/AKfycbyyCD8LCg-GOOoE8W1VyC5zna32sDV57FbN2yen1vJvBx3gLHVnOwAz3-9m67DzRvXW/exec" target="_blank">
+            Enter AI Workmate System
+          </a>
+          <a class="btn-secondary" href="#features">
+            Explore Features
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>AI Workmate: Knowledge Legacy</div>
+      <div>Prototype for AI-assisted tacit knowledge transfer</div>
+    </div>
+  </footer>
+
 </body>
 </html>
